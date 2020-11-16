@@ -1,35 +1,45 @@
-import { defineComponent, toRefs, computed, h } from "vue";
-import PropTypes from "../../utils/vue-types";
-import { withInstall } from "../../utils/type";
+import {
+  defineComponent,
+  toRefs,
+  computed,
+} from 'vue';
+import PropTypes from '../../utils/vue-types';
+import { withInstall } from '../../utils/type';
 
 const IconProps = {
   type: PropTypes.string,
   size: PropTypes.string || PropTypes.number,
   color: PropTypes.string,
-  custom: PropTypes.string
+  custom: PropTypes.string,
 };
 
 const Icon = defineComponent({
-  name: "Icon",
+  name: 'Icon',
   inheritAttrs: false,
   props: IconProps,
   setup(props, { emit }) {
-    const prefixCls = "ivu-icon";
-    const { type, custom, size, color } = toRefs(props);
+    const prefixCls = 'ivu-icon';
+    const {
+      type,
+      custom,
+      size,
+      color,
+    } = toRefs(props);
     const classes = computed(() => {
-      return [
+      const classArray = [
         `${prefixCls}`,
         {
-          [`${prefixCls}-${type.value}`]: type.value !== "",
-          [`${custom.value}`]: custom.value !== ""
-        }
+          [`${prefixCls}-${type.value}`]: type.value !== '',
+          [`${custom.value}`]: custom.value !== '',
+        },
       ];
+      return classArray;
     });
     const styles = computed(() => {
-      let style: any = {};
+      const style: any = {};
 
       if (size.value) {
-        style["font-size"] = `${size.value}px`;
+        style['font-size'] = `${size.value}px`;
       }
 
       if (color.value) {
@@ -37,22 +47,22 @@ const Icon = defineComponent({
       }
 
       return style;
-    });
+    }) as any;
     const handleClick = (e: Event) => {
-      emit("click", e);
+      emit('click', e);
     };
-    const iconFragments = <i class={classes} style={{...styles}} nativeOn-click={handleClick}></i>;
+    const iconFragments = <i class={classes} style={styles} nativeOn-click={handleClick}></i>;
     return {
       classes,
       styles,
       handleClick,
-      iconFragments
+      iconFragments,
     };
   },
   render() {
     const { iconFragments } = this;
-    return h(iconFragments, null, null);
-  }
+    return iconFragments;
+  },
 });
 
 export default withInstall(Icon);
